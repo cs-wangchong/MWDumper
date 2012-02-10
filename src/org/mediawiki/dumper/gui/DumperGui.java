@@ -250,6 +250,7 @@ public class DumperGui {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "MediaWiki Import");
 		
+		@SuppressWarnings("unused")
 		DumperGui manager = new DumperGui();
 	}
 	

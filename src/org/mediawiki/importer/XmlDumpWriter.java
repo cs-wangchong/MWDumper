@@ -80,8 +80,8 @@ public class XmlDumpWriter implements DumpWriter {
 		writer.textElement("case", info.Case);
 		
 		writer.openElement("namespaces");
-		for (Iterator i = info.Namespaces.orderedEntries(); i.hasNext();) {
-			Map.Entry e = (Map.Entry)i.next();
+		for (Iterator<Map.Entry<Integer, String>> i = info.Namespaces.orderedEntries(); i.hasNext();) {
+			Map.Entry<Integer, String> e = i.next();
 			writer.textElement("namespace", e.getValue().toString(), new String[][] {
 					{"key", e.getKey().toString()}});
 		}

@@ -31,7 +31,7 @@ public final class Buffer {
 
 	private Buffer() {}
 
-	private static final IdentityHashMap BUFFERS = new IdentityHashMap();
+	private static final IdentityHashMap<Thread, char[]> BUFFERS = new IdentityHashMap<Thread, char[]>();
 
 	private static Thread lastThread;
 	private static char[] lastBuffer;
@@ -44,7 +44,7 @@ public final class Buffer {
 			buffer = lastBuffer;
 		} else {
 			lastThread = thread;
-			buffer = lastBuffer = (char[]) BUFFERS.get(thread);
+			buffer = lastBuffer = BUFFERS.get(thread);
 		}
 
 		if (buffer == null) {

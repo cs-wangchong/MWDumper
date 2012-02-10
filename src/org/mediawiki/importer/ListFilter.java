@@ -32,11 +32,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class ListFilter extends PageFilter {
-	protected HashMap list;
+	protected HashMap<String, String> list;
 	
 	public ListFilter(DumpWriter sink, String sourceFileName) throws IOException {
 		super(sink);
-		list = new HashMap();
+		list = new HashMap<String, String>();
 		BufferedReader input = new BufferedReader(new InputStreamReader(
 			new FileInputStream(sourceFileName), "utf-8"));
 		String line = input.readLine();

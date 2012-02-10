@@ -12,6 +12,11 @@ package org.mediawiki.dumper.gui;
  */
 public class DumperWindowForm extends javax.swing.JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9045740449396873205L;
+
 	/** Creates new form DumperWindow */
 	public DumperWindowForm() {
 		initComponents();

@@ -26,6 +26,10 @@ import org.mediawiki.importer.DumpWriter;
  * @author brion
  */
 public class DumperWindow extends DumperWindowForm {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 154925660542049290L;
 	protected DumperGui backend;
 	private int dbtype = DumperGui.DBTYPE_MYSQL;
 	
@@ -160,7 +164,7 @@ public class DumperWindow extends DumperWindowForm {
 			backend.connect(dbtype, serverText.getText(),
 				portText.getText(),
 				userText.getText(),
-				passwordText.getText());
+				new String(passwordText.getPassword()));
 	}
 	
 	protected void onDbTypeButtonActionPerformed(java.awt.event.ActionEvent evt) {

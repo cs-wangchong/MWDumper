@@ -66,7 +66,6 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.zip.GZIPOutputStream;
-import java.lang.ClassNotFoundException;
 
 import java.text.ParseException;
 

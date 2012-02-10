@@ -29,7 +29,7 @@ import java.util.HashMap;
 
 public class NamespaceFilter extends PageFilter {
 	boolean invert;
-	HashMap matches;
+	HashMap<Integer, String> matches;
 	
 	public NamespaceFilter(DumpWriter sink, String configString) {
 		super(sink);
@@ -37,7 +37,7 @@ public class NamespaceFilter extends PageFilter {
 		invert = configString.startsWith("!");
 		if (invert)
 			configString = configString.substring(1);
-		matches = new HashMap();
+		matches = new HashMap<Integer, String>();
 		
 		String[] namespaceKeys = {
 			"NS_MAIN",

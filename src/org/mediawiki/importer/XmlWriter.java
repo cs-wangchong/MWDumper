@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class XmlWriter {
 	OutputStream stream;
 	String encoding;
-	ArrayList stack;
+	ArrayList<String> stack;
 	BufferedWriter writer;
 	
 	public XmlWriter(OutputStream stream) throws IOException {
 		this.stream = stream;
 		encoding = "utf-8";
-		stack = new ArrayList();
+		stack = new ArrayList<String>();
 		writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF8"));
 	}
 	
@@ -171,7 +171,7 @@ public class XmlWriter {
 	}
 	
 	private String[] deindent() {
-		String element = (String)stack.remove(stack.size() - 1);
+		String element = stack.remove(stack.size() - 1);
 		String space = spaces(stack.size());
 		return new String[] {element, space};
 	}

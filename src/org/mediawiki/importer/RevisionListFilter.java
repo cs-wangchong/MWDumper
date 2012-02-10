@@ -34,13 +34,13 @@ import java.util.TreeSet;
 
 public class RevisionListFilter implements DumpWriter {
 	DumpWriter sink;
-	protected TreeSet revIds;
+	protected TreeSet<Integer> revIds;
 	protected Page currentPage;
 	protected boolean pageWritten;
 	
 	public RevisionListFilter(DumpWriter sink, String sourceFileName) throws IOException {
 		this.sink = sink;
-		revIds = new TreeSet();
+		revIds = new TreeSet<Integer>();
 		BufferedReader input = new BufferedReader(new InputStreamReader(
 			new FileInputStream(sourceFileName), "utf-8"));
 		String line = input.readLine();

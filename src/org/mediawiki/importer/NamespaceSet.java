@@ -31,12 +31,12 @@ import java.util.LinkedHashMap;
 import java.util.Iterator;
 
 public class NamespaceSet {
-	Map byname;
-	Map bynumber;
+	Map<String, Integer> byname;
+	Map<Integer, String> bynumber;
 	
 	public NamespaceSet() {
-		byname = new HashMap();
-		bynumber = new LinkedHashMap();
+		byname = new HashMap<String, Integer>();
+		bynumber = new LinkedHashMap<Integer, String>();
 	}
 	
 	public void add(int index, String prefix) {
@@ -57,11 +57,11 @@ public class NamespaceSet {
 	}
 	
 	public String getPrefix(Integer index) {
-		return (String)bynumber.get(index);
+		return bynumber.get(index);
 	}
 	
 	public Integer getIndex(String prefix) {
-		return (Integer)byname.get(prefix);
+		return byname.get(prefix);
 	}
 	
 	public String getColonPrefix(Integer index) {
@@ -71,7 +71,7 @@ public class NamespaceSet {
 		return prefix;
 	}
 	
-	public Iterator orderedEntries() {
+	public Iterator<Map.Entry<Integer, String>>  orderedEntries() {
 		return bynumber.entrySet().iterator();
 	}
 }
