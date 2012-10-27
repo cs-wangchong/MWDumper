@@ -30,6 +30,7 @@ import java.util.Hashtable;
 public class Page {
 	public Title Title;
 	public int Id;
+	public boolean isRedirect = false;
 	public Hashtable<String,Object> DiscussionThreadingInfo;
 	public String Restrictions;
 	

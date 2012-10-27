@@ -138,6 +138,7 @@ public class XmlDumpReader  extends DefaultHandler {
 		endElements.put("namespaces","namespaces");
 		endElements.put("namespace","namespace");
 		endElements.put("page","page");
+		endElements.put("redirect","redirect");
 		endElements.put("restrictions","restrictions");
 		endElements.put("revision","revision");
 		endElements.put("siteinfo","siteinfo");
@@ -212,6 +213,7 @@ public class XmlDumpReader  extends DefaultHandler {
 			else if (qName == "page") closePage();
 			else if (qName == "title") readTitle();
 			else if (qName == "restrictions") readRestrictions();
+			else if (qName == "redirect") readRedirect();
 			// rare tags:
 			else if (qName.startsWith("Thread")) threadAttribute(qName);
 			else if (qName == "mediawiki") closeMediaWiki();
@@ -325,6 +327,10 @@ public class XmlDumpReader  extends DefaultHandler {
 			page.Id = id;
 		else
 			throw new IllegalArgumentException("Unexpected <id> outside a <page>, <revision>, or <contributor>");
+	}
+	
+	void readRedirect() {
+		page.isRedirect = true;
 	}
 	
 	void readRestrictions() {

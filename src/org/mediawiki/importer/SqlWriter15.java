@@ -118,7 +118,7 @@ public class SqlWriter15 extends SqlWriter {
 				{"page_title", titleFormat(page.Title.Text)},
 				{"page_restrictions", page.Restrictions},
 				{"page_counter", ZERO},
-				{"page_is_redirect", revision.isRedirect() ? ONE : ZERO},
+				{"page_is_redirect", page.isRedirect ? ONE : ZERO},
 				{"page_is_new", ZERO},
 				{"page_random", traits.getRandom()},
 				{"page_touched", traits.getCurrentTime()},

@@ -35,11 +35,6 @@ public class Revision {
 	public String Text;
 	public boolean Minor;
 	
-	public boolean isRedirect() {
-		// FIXME
-		return Text.startsWith("#REDIRECT ") || Text.startsWith("#redirect ");
-	}
-	
 	public Revision() {
 		Comment = "";
 		Text = "";

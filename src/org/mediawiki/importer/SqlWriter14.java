@@ -85,7 +85,7 @@ public class SqlWriter14 extends SqlWriter {
 				{"cur_timestamp", timestampFormat(revision.Timestamp)},
 				{"cur_restrictions", page.Restrictions},
 				{"cur_counter", ZERO},
-				{"cur_is_redirect", revision.isRedirect() ? ONE : ZERO},
+				{"cur_is_redirect", page.isRedirect ? ONE : ZERO},
 				{"cur_minor_edit", revision.Minor ? ONE : ZERO},
 				{"cur_random", traits.getRandom()},
 				{"cur_touched", traits.getCurrentTime()},
