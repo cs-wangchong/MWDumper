@@ -35,10 +35,6 @@ public class Tools {
 	}
 
 	static InputStream openBZip2Stream(InputStream infile) throws IOException {
-		int first = infile.read();
-		int second = infile.read();
-		if (first != 'B' || second != 'Z')
-			throw new IOException("Didn't find BZ file signature in .bz2 file");
 		return new BZip2CompressorInputStream(infile);
 	}
 
