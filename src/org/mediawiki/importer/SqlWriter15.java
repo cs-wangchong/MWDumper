@@ -79,7 +79,7 @@ public class SqlWriter15 extends SqlWriter {
 				{"rev_id", new Integer(revision.Id)},
 				{"rev_page", new Integer(currentPage.Id)},
 				{"rev_text_id", new Integer(revision.Id)},
-				{"rev_comment", revision.Comment == null ? "" : revision.Comment},
+				{"rev_comment", commentFormat(revision.Comment)},
 				{"rev_user", revision.Contributor.Username == null ? ZERO :  new Integer(revision.Contributor.Id)},
 				{"rev_user_text", revision.Contributor.Username == null ? "" : revision.Contributor.Username},
 				{"rev_timestamp", timestampFormat(revision.Timestamp)},
