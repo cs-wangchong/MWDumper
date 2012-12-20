@@ -57,7 +57,7 @@ public abstract class SqlWriter implements DumpWriter {
 			return new SqlLiteral("DATE_ADD('1970-01-01', INTERVAL UNIX_TIMESTAMP() SECOND)+0");
 		}
 		public SqlLiteral getRandom() {
-			return new SqlLiteral("RAND()");	
+			return new SqlLiteral("RAND()");
 		}
 		public boolean supportsMultiRowInsert() {
 			return true;
@@ -66,7 +66,7 @@ public abstract class SqlWriter implements DumpWriter {
 			return "text";
 		}
 		private static final MessageFormat timestampFormatter = new MessageFormat(
-				"{0,number,0000}{1,number,00}{2,number,00}{3,number,00}{4,number,00}{5,number,00}");
+			"{0,number,0000}{1,number,00}{2,number,00}{3,number,00}{4,number,00}{5,number,00}");
 		public MessageFormat getTimestampFormatter() {
 			return timestampFormatter;
 		}
@@ -86,44 +86,44 @@ public abstract class SqlWriter implements DumpWriter {
 			return "pagecontent";
 		}
 		private static final MessageFormat timestampFormatter = new MessageFormat(
-				"{0,number,0000}-{1,number,00}-{2,number,00} {3,number,00}:{4,number,00}:{5,number,00}");
+			"{0,number,0000}-{1,number,00}-{2,number,00} {3,number,00}:{4,number,00}:{5,number,00}");
 		public MessageFormat getTimestampFormatter() {
 			return timestampFormatter;
 		}
 		public String getWikiPrologue() {
 			return
-"ALTER TABLE revision DISABLE TRIGGER ALL;" +
-"ALTER TABLE page DISABLE TRIGGER ALL;";
+				"ALTER TABLE revision DISABLE TRIGGER ALL;" +
+				"ALTER TABLE page DISABLE TRIGGER ALL;";
 		}
 		public String getWikiEpilogue() {
 			return
-"ALTER TABLE revision ENABLE TRIGGER ALL;" +
-"ALTER TABLE page ENABLE TRIGGER ALL;";
+				"ALTER TABLE revision ENABLE TRIGGER ALL;" +
+				"ALTER TABLE page ENABLE TRIGGER ALL;";
 		}
 	}
 
 	private SqlStream stream;
 	private String tablePrefix = "";
-	
+
 	protected static final Integer ONE = new Integer(1);
 	protected static final Integer ZERO = new Integer(0);
 	protected Traits traits;
-	
+
 	public SqlWriter(Traits tr, SqlStream output) {
 		stream = output;
 		traits = tr;
 	}
-	
+
 	public SqlWriter(Traits tr, SqlStream output, String prefix) {
 		stream = output;
 		tablePrefix = prefix;
 		traits = tr;
 	}
-	
+
 	public void close() throws IOException {
 		stream.close();
 	}
-	
+
 	public void writeStartWiki() throws IOException {
 		stream.writeComment("-- MediaWiki XML dump converted to SQL by mwdumper");
 		stream.writeStatement("BEGIN");
@@ -132,7 +132,7 @@ public abstract class SqlWriter implements DumpWriter {
 		if (prologue != null)
 			stream.writeStatement(prologue);
 	}
-	
+
 	public void writeEndWiki() throws IOException {
 		flushInsertBuffers();
 
@@ -142,7 +142,7 @@ public abstract class SqlWriter implements DumpWriter {
 		stream.writeStatement("COMMIT");
 		stream.writeComment("-- DONE");
 	}
-	
+
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		stream.writeComment("");
 		stream.writeComment("-- Site: " + commentSafe(info.Sitename));
@@ -157,20 +157,20 @@ public abstract class SqlWriter implements DumpWriter {
 		}
 		stream.writeComment("");
 	}
-	
+
 	public abstract void writeStartPage(Page page) throws IOException;
-	
+
 	public abstract void writeEndPage() throws IOException;
-	
+
 	public abstract void writeRevision(Revision revision) throws IOException;
-	
-	
-	
+
+
+
 	protected String commentSafe(String text) {
 		// TODO
 		return text;
 	}
-	
+
 	private HashMap<String, StringBuffer> insertBuffers = new HashMap<String, StringBuffer>();
 	private static final int blockSize = 1024 * 512; // default 512k inserts
 	protected void bufferInsertRow(String table, Object[][] row) throws IOException {
@@ -190,12 +190,12 @@ public abstract class SqlWriter implements DumpWriter {
 			insertBuffers.put(table, sql);
 		}
 	}
-	
+
 	protected void flushInsertBuffer(String table) throws IOException {
 		stream.writeStatement(insertBuffers.get(table));
 		insertBuffers.remove(table);
 	}
-	
+
 	protected void flushInsertBuffers() throws IOException {
 		Iterator<StringBuffer> iter = insertBuffers.values().iterator();
 		while (iter.hasNext()) {
@@ -203,19 +203,19 @@ public abstract class SqlWriter implements DumpWriter {
 		}
 		insertBuffers.clear();
 	}
-	
+
 	protected void insertRow(String table, Object[][] row) throws IOException {
 		StringBuffer sql = new StringBuffer(65536);
-		appendInsertStatement(sql, table, row);		
+		appendInsertStatement(sql, table, row);
 		stream.writeStatement(sql);
 	}
-	
+
 	private void appendInsertStatement(StringBuffer sql, String table, Object[][] row) {
 		sql.append("INSERT INTO ");
 		sql.append(tablePrefix);
 		sql.append(table);
 		sql.append(" (");
-		
+
 		for (int i = 0; i < row.length; i++) {
 			String field = (String)row[i][0];
 			if (i > 0)
@@ -225,7 +225,7 @@ public abstract class SqlWriter implements DumpWriter {
 		sql.append(") VALUES ");
 		appendInsertValues(sql, row);
 	}
-	
+
 	private static void appendInsertValues(StringBuffer sql, Object[][] row) {
 		sql.append('(');
 		for (int i = 0; i < row.length; i++) {
@@ -236,38 +236,38 @@ public abstract class SqlWriter implements DumpWriter {
 		}
 		sql.append(')');
 	}
-	
+
 	protected void updateRow(String table, Object[][] row, String keyField, Object keyValue) throws IOException {
 		StringBuffer sql = new StringBuffer(65536);
 		synchronized (sql) { //only for StringBuffer
-		sql.append("UPDATE ");
-		sql.append(tablePrefix);
-		sql.append(table);
-		sql.append(" SET ");
-		
-		for (int i = 0; i < row.length; i++) {
-			String field = (String)row[i][0];
-			Object val = row[i][1];
-			if (i > 0)
-				sql.append(',');
-			sql.append(field);
+			sql.append("UPDATE ");
+			sql.append(tablePrefix);
+			sql.append(table);
+			sql.append(" SET ");
+
+			for (int i = 0; i < row.length; i++) {
+				String field = (String)row[i][0];
+				Object val = row[i][1];
+				if (i > 0)
+					sql.append(',');
+				sql.append(field);
+				sql.append('=');
+				sql.append(sqlSafe(val));
+			}
+
+			sql.append(" WHERE ");
+			sql.append(keyField);
 			sql.append('=');
-			sql.append(sqlSafe(val));
-		}
-		
-		sql.append(" WHERE ");
-		sql.append(keyField);
-		sql.append('=');
-		sql.append(sqlSafe(keyValue));
-		
-		stream.writeStatement(sql);
+			sql.append(sqlSafe(keyValue));
+
+			stream.writeStatement(sql);
 		}
 	}
-	
+
 	protected static String sqlSafe(Object val) {
 		if (val == null)
 			return "NULL";
-		
+
 		String str = val.toString();
 		if (val instanceof String) {
 			return sqlEscape(str);
@@ -281,66 +281,74 @@ public abstract class SqlWriter implements DumpWriter {
 			throw new IllegalArgumentException("Unknown type in SQL");
 		}
 	}
-	
+
 	protected static String sqlEscape(String str) {
 		if (str.length() == 0)
 			return "''"; //TODO "NULL",too ?
 		final int len = str.length();
 		StringBuffer sql = new StringBuffer(len * 2);
 		synchronized (sql) { //only for StringBuffer
-		sql.append('\'');
-		for (int i = 0; i < len; i++) {
-			char c = str.charAt(i);
-			switch (c) {
-			case '\u0000':
-				sql.append('\\').append('0');
-				break;
-			case '\n':
-				sql.append('\\').append('n');
-				break;
-			case '\r':
-				sql.append('\\').append('r');
-				break;
-			case '\u001a':
-				sql.append('\\').append('Z');
-				break;
-			case '"':
-			case '\'':
-			case '\\':
-				sql.append('\\');
-				// fall through
-			default:
-				sql.append(c);
-				break;
+			sql.append('\'');
+			for (int i = 0; i < len; i++) {
+				char c = str.charAt(i);
+				switch (c) {
+					case '\u0000':
+						sql.append('\\').append('0');
+						break;
+					case '\n':
+						sql.append('\\').append('n');
+						break;
+					case '\r':
+						sql.append('\\').append('r');
+						break;
+					case '\u001a':
+						sql.append('\\').append('Z');
+						break;
+					case '"':
+					case '\'':
+					case '\\':
+						sql.append('\\');
+						// fall through
+					default:
+						sql.append(c);
+						break;
+				}
 			}
-		}
-		sql.append('\'');
-		return sql.toString();
+			sql.append('\'');
+			return sql.toString();
 		}
 	}
-	
+
 	protected static String titleFormat(String title) {
 		return title.replace(' ', '_');
 	}
-	
+
+	protected static String commentFormat(String comment) {
+		if (comment == null || comment.length() == 0) return "";
+		if (comment.endsWith("\uFFFD")) {  // replacement character
+			comment = comment.substring(0, comment.length() - 1);
+		}
+		return comment;
+	}
+
 	protected String timestampFormat(Calendar time) {
 		return traits.getTimestampFormatter().format(new Object[] {
-				new Integer(time.get(Calendar.YEAR)),
-				new Integer(time.get(Calendar.MONTH) + 1),
-				new Integer(time.get(Calendar.DAY_OF_MONTH)),
-				new Integer(time.get(Calendar.HOUR_OF_DAY)),
-				new Integer(time.get(Calendar.MINUTE)),
-				new Integer(time.get(Calendar.SECOND))});
+			new Integer(time.get(Calendar.YEAR)),
+			new Integer(time.get(Calendar.MONTH) + 1),
+			new Integer(time.get(Calendar.DAY_OF_MONTH)),
+			new Integer(time.get(Calendar.HOUR_OF_DAY)),
+			new Integer(time.get(Calendar.MINUTE)),
+			new Integer(time.get(Calendar.SECOND))});
 	}
-	
+
 	protected String inverseTimestamp(Calendar time) {
 		return traits.getTimestampFormatter().format(new Object[] {
-				new Integer(9999 - time.get(Calendar.YEAR)),
-				new Integer(99 - time.get(Calendar.MONTH) - 1),
-				new Integer(99 - time.get(Calendar.DAY_OF_MONTH)),
-				new Integer(99 - time.get(Calendar.HOUR_OF_DAY)),
-				new Integer(99 - time.get(Calendar.MINUTE)),
-				new Integer(99 - time.get(Calendar.SECOND))});
+			new Integer(9999 - time.get(Calendar.YEAR)),
+			new Integer(99 - time.get(Calendar.MONTH) - 1),
+			new Integer(99 - time.get(Calendar.DAY_OF_MONTH)),
+			new Integer(99 - time.get(Calendar.HOUR_OF_DAY)),
+			new Integer(99 - time.get(Calendar.MINUTE)),
+			new Integer(99 - time.get(Calendar.SECOND))});
 	}
 
 	private static final TimeZone utc = TimeZone.getTimeZone("UTC");
