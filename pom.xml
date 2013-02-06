@@ -58,7 +58,7 @@
   </dependencies>
 
   <build>
-    <directory>build</directory>
+    <directory>target</directory>
     <!-- where the jar goes -->
     <sourceDirectory>src</sourceDirectory>
     <!-- where the source files are -->
@@ -106,6 +106,22 @@
           </archive>
         </configuration>
       </plugin>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>1.6</version>
+          <configuration>
+            <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
     </plugins>
 
     <resources>
