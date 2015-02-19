@@ -32,8 +32,8 @@ You can also do complex filtering to produce multiple output files:
     --output=bzip2:pages_current.xml.bz2 \
       --format=xml \
       --filter=latest \
-    --output=gzip:pages_full_1.5.sql.gz \
-      --format=mysql:1.5 \
+    --output=gzip:pages_full_1.25.sql.gz \
+      --format=mysql:1.25 \
     --output=gzip:pages_full_1.4.sql.gz \
       --format=mysql:1.4 \
     pages_full.xml.gz
@@ -88,6 +88,8 @@ Output formats:
       be already set up in an empty database; use maintenance/tables.sql
       from the MediaWiki distribution.
       (MySQL output format.)
+  --format=mysql:1.25
+      SQL statements formatted for bulk import into MediaWiki 1.25's schema.
   --format=pgsql:1.4
       SQL statements formatted for bulk import in MediaWiki 1.4's schema.
       (PostgreSQL output format.)

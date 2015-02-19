@@ -261,6 +261,8 @@ class Dumper {
 				ret = new SqlWriter14(tr, sqlStream);
 			else if (param.equals("1.5"))
 				ret = new SqlWriter15(tr, sqlStream);
+			else if (param.equals("1.25"))
+				ret = new SqlWriter1_25(tr, sqlStream);
 			else
 				throw new IllegalArgumentException("SQL version not known: " + param);
 

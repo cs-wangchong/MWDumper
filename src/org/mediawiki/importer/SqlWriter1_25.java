@@ -23,54 +23,52 @@
  * $Id$
  */
 
-// Doesn't actually work yet...
-
 package org.mediawiki.importer;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 
-public class SqlWriter15 extends SqlWriter {
-	protected Page currentPage;
-	protected Revision lastRevision;
-	
-	public SqlWriter15(SqlWriter.Traits tr, SqlStream output) {
+public class SqlWriter1_25 extends SqlWriter15 {
+	public SqlWriter1_25(SqlWriter.Traits tr, SqlStream output) {
 		super(tr, output);
 	}
 	
-	public SqlWriter15(SqlWriter.Traits tr, SqlStream output, String prefix) {
+	public SqlWriter1_25(SqlWriter.Traits tr, SqlStream output, String prefix) {
 		super(tr, output, prefix);
 	}
 	
-	public void writeEndWiki() throws IOException {
-		flushInsertBuffers();
-		super.writeEndWiki();
-	}
-	
-	public void writeStartPage(Page page) {
-		currentPage = page;
-		lastRevision = null;
-	}
-	
-	public void writeEndPage() throws IOException {
-		if (lastRevision != null) {
-			updatePage(currentPage, lastRevision);
+	protected void updatePage(Page page, Revision revision) throws IOException {
+		bufferInsertRow("page", new Object[][] {
+				{"page_id", new Integer(page.Id)},
+				{"page_namespace", page.Title.Namespace},
+				{"page_title", titleFormat(page.Title.Text)},
+				{"page_restrictions", page.Restrictions},
+				{"page_is_redirect", page.isRedirect ? ONE : ZERO},
+				{"page_is_new", ZERO},
+				{"page_random", traits.getRandom()},
+				{"page_touched", traits.getCurrentTime()},
+				{"page_latest", new Integer(revision.Id)},
+				{"page_len", revision.Bytes},
+				{"page_content_model", revision.Model},
+		});
+
+		if (page.Redirect != null) {
+			bufferInsertRow("redirect", new Object[][] {
+				{"rd_from", new Integer(page.Id)},
+				{"rd_namespace", page.Redirect.Namespace},
+				{"rd_title", titleFormat(page.Redirect.Text)},
+			});
 		}
-		currentPage = null;
-		lastRevision = null;
+		checkpoint();
 	}
-	
-	static final int DELETED_TEXT = 1;
-	static final int DELETED_COMMENT = 2;
-	static final int DELETED_USER = 4;
-	static final int DELETED_RESTRICTED = 8;
-	
+
 	public void writeRevision(Revision revision) throws IOException {
 		bufferInsertRow(traits.getTextTable(), new Object[][] {
 				{"old_id", new Integer(revision.Id)},
 				{"old_text", revision.Text == null ? "" : revision.Text},
 				{"old_flags", "utf-8"}});
 		
-		int rev_deleted = 0; 
+		int rev_deleted = 0;
 		if (revision.Contributor.Username==null) rev_deleted |= DELETED_USER;
 		if (revision.Comment==null) rev_deleted |= DELETED_COMMENT;
 		if (revision.Text==null) rev_deleted |= DELETED_TEXT;
@@ -84,25 +82,14 @@ public class SqlWriter15 extends SqlWriter {
 				{"rev_user_text", revision.Contributor.Username == null ? "" : revision.Contributor.Username},
 				{"rev_timestamp", timestampFormat(revision.Timestamp)},
 				{"rev_minor_edit", revision.Minor ? ONE : ZERO},
-				{"rev_deleted", rev_deleted==0 ? ZERO : new Integer(rev_deleted) }});
+				{"rev_parent_id", revision.Parentid == 0 ? null : new Integer(revision.Parentid)},
+				{"rev_sha1", revision.Sha1},
+				{"rev_content_model", revision.Model},
+				{"rev_content_format", revision.Format},
+				{"rev_deleted", rev_deleted==0 ? ZERO : new Integer(rev_deleted)},
+				{"rev_len", revision.Bytes},
+		});
 		
 		lastRevision = revision;
 	}
-	
-	protected void updatePage(Page page, Revision revision) throws IOException {
-		bufferInsertRow("page", new Object[][] {
-				{"page_id", new Integer(page.Id)},
-				{"page_namespace", page.Title.Namespace},
-				{"page_title", titleFormat(page.Title.Text)},
-				{"page_restrictions", page.Restrictions},
-				{"page_counter", ZERO},
-				{"page_is_redirect", page.isRedirect ? ONE : ZERO},
-				{"page_is_new", ZERO},
-				{"page_random", traits.getRandom()},
-				{"page_touched", traits.getCurrentTime()},
-				{"page_latest", new Integer(revision.Id)},
-				{"page_len", revision.Bytes}});
-		checkpoint();
-	}
-
 }
