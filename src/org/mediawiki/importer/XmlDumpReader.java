@@ -50,12 +50,14 @@ public class XmlDumpReader  extends DefaultHandler {
 	private boolean hasContent = false;
 	private boolean deleted = false;
 	
+	Wikiinfo wikiinfo;
 	Siteinfo siteinfo;
 	Page page;
 	boolean pageSent;
 	Contributor contrib;
 	Revision rev;
 	int nskey;
+	String nscase;
 	
 	boolean abortFlag;
 	
@@ -116,6 +118,8 @@ public class XmlDumpReader  extends DefaultHandler {
 		startElements.put("siteinfo","siteinfo");
 		startElements.put("namespaces","namespaces");
 		startElements.put("namespace","namespace");
+		startElements.put("redirect","redirect");
+		startElements.put("text","text");
 
 		endElements.put("ThreadSubject","ThreadSubject");
 		endElements.put("ThreadParent","ThreadParent");
@@ -129,18 +133,23 @@ public class XmlDumpReader  extends DefaultHandler {
 		endElements.put("base","base");
 		endElements.put("case","case");
 		endElements.put("comment","comment");
+		endElements.put("dbname","dbname");
 		endElements.put("contributor","contributor");
+		endElements.put("format","format");
 		endElements.put("generator","generator");
 		endElements.put("id","id");
 		endElements.put("ip","ip");
 		endElements.put("mediawiki", "mediawiki");
 		endElements.put("minor","minor");
+		endElements.put("model","model");
 		endElements.put("namespaces","namespaces");
 		endElements.put("namespace","namespace");
+		endElements.put("ns","ns");
 		endElements.put("page","page");
-		endElements.put("redirect","redirect");
+		endElements.put("parentid","parentid");
 		endElements.put("restrictions","restrictions");
 		endElements.put("revision","revision");
+		endElements.put("sha1","sha1");
 		endElements.put("siteinfo","siteinfo");
 		endElements.put("sitename","sitename");
 		endElements.put("text","text");
@@ -161,6 +170,7 @@ public class XmlDumpReader  extends DefaultHandler {
 
 		// check for deleted="deleted", and set deleted flag for the current element. 
 		String d = attributes.getValue("deleted");
+		// FIXME: I'm not sure the deleted attribute is preserved in our objects?
 		deleted = (d!=null && d.equals("deleted")); 
 		
 		try {
@@ -171,8 +181,10 @@ public class XmlDumpReader  extends DefaultHandler {
 			if (qName == "revision") openRevision();
 			else if (qName == "contributor") openContributor();
 			else if (qName == "page") openPage();
+			else if (qName == "redirect") openRedirect(attributes);
+			else if (qName == "text") openText(attributes);
 			// rare tags:
-			else if (qName == "mediawiki") openMediaWiki();
+			else if (qName == "mediawiki") openMediaWiki(attributes);
 			else if (qName == "siteinfo") openSiteinfo();
 			else if (qName == "namespaces") openNamespaces();
 			else if (qName == "namespace") openNamespace(attributes);
@@ -203,6 +215,7 @@ public class XmlDumpReader  extends DefaultHandler {
 			// frequent tags:
 			if (qName == "id") readId();
 			else if (qName == "revision") closeRevision();
+			else if (qName == "parentid") readParentid();
 			else if (qName == "timestamp") readTimestamp();
 			else if (qName == "text") readText();
 			else if (qName == "contributor") closeContributor();
@@ -210,15 +223,19 @@ public class XmlDumpReader  extends DefaultHandler {
 			else if (qName == "ip") readIp();
 			else if (qName == "comment") readComment();
 			else if (qName == "minor") readMinor();
+			else if (qName == "model") readModel();
+			else if (qName == "format") readFormat();
+			else if (qName == "sha1") readSha1();
 			else if (qName == "page") closePage();
 			else if (qName == "title") readTitle();
+			else if (qName == "ns") readNs();
 			else if (qName == "restrictions") readRestrictions();
-			else if (qName == "redirect") readRedirect();
 			// rare tags:
 			else if (qName.startsWith("Thread")) threadAttribute(qName);
 			else if (qName == "mediawiki") closeMediaWiki();
 			else if (qName == "siteinfo") closeSiteinfo();
 			else if (qName == "sitename") readSitename();
+			else if (qName == "dbname") readDbname();
 			else if (qName == "base") readBase();
 			else if (qName == "generator") readGenerator();
 			else if (qName == "case") readCase();
@@ -239,9 +256,16 @@ public class XmlDumpReader  extends DefaultHandler {
 			page.DiscussionThreadingInfo.put(attrib, bufferContents());
 	}
 	
-	void openMediaWiki() throws IOException {
+	void openMediaWiki(Attributes attributes) throws IOException {
 		siteinfo = null;
-		writer.writeStartWiki();
+
+		wikiinfo = new Wikiinfo();
+		wikiinfo.Lang = attributes.getValue("xml:lang");
+		if (wikiinfo.Lang.length() == 0) {
+			wikiinfo.Lang = "en";
+		}
+
+		writer.writeStartWiki(wikiinfo);
 	}
 	
 	void closeMediaWiki() throws IOException {
@@ -272,6 +296,10 @@ public class XmlDumpReader  extends DefaultHandler {
 		siteinfo.Sitename = bufferContents();
 	}
 	
+	void readDbname() {
+		siteinfo.Dbname = bufferContents();
+	}
+
 	void readBase() {
 		siteinfo.Base = bufferContents();
 	}
@@ -290,10 +318,11 @@ public class XmlDumpReader  extends DefaultHandler {
 	
 	void openNamespace(Attributes attribs) {
 		nskey = Integer.parseInt(attribs.getValue("key"));
+		nscase = attribs.getValue("case");
 	}
 	
 	void closeNamespace() {
-		siteinfo.Namespaces.add(nskey, bufferContents());
+		siteinfo.Namespaces.add(nskey, bufferContents(), nscase);
 	}
 
 	void closeNamespaces() {
@@ -316,7 +345,11 @@ public class XmlDumpReader  extends DefaultHandler {
 	void readTitle() {
 		page.Title = new Title(bufferContents(), siteinfo.Namespaces);
 	}
-	
+
+	void readNs() {
+		page.Ns = Integer.parseInt(bufferContents());
+	}
+
 	void readId() {
 		int id = Integer.parseInt(bufferContents());
 		if (contrib != null) 
@@ -328,11 +361,15 @@ public class XmlDumpReader  extends DefaultHandler {
 		else
 			throw new IllegalArgumentException("Unexpected <id> outside a <page>, <revision>, or <contributor>");
 	}
-	
-	void readRedirect() {
+
+	void openRedirect(Attributes attributes) {
+		String title = attributes.getValue("title");
+		if (title != null) {
+			page.Redirect = new Title(title, siteinfo.Namespaces);
+		}
 		page.isRedirect = true;
 	}
-	
+
 	void readRestrictions() {
 		page.Restrictions = bufferContents();
 	}
@@ -353,6 +390,10 @@ public class XmlDumpReader  extends DefaultHandler {
 		rev = null;
 	}
 
+	void readParentid() {
+		rev.Parentid = Integer.parseInt(bufferContents());
+	}
+
 	void readTimestamp() {
 		rev.Timestamp = parseUTCTimestamp(bufferContents());
 	}
@@ -366,9 +407,37 @@ public class XmlDumpReader  extends DefaultHandler {
 		rev.Minor = true;
 	}
 
+	void readModel() {
+		rev.Model = bufferContents();
+	}
+
+	void readFormat() {
+		rev.Format = bufferContents();
+	}
+
+	void openText(Attributes attributes) {
+		String bytes = attributes.getValue("bytes");
+		if (bytes != null) {
+			rev.Bytes = new Integer(bytes);
+		}
+	}
+
 	void readText() {
 		rev.Text = bufferContentsOrNull();
 		if (rev.Text==null && !deleted) rev.Text = ""; //NOTE: null means deleted/supressed
+	}
+
+	void readSha1() {
+		String sha1 = bufferContents();
+
+		if (rev != null) {
+			rev.Sha1 = sha1;
+		} else if (page != null) {
+			// Wikia running MW 1.19 emits a <sha1> directly under <page>;
+			// ignore it for now as it's unclear how to map it.
+		} else {
+			throw new IllegalArgumentException("Unexpected <id> outside a <revision>");
+		}
 	}
 	
 	// -----------

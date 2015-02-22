@@ -29,13 +29,19 @@ import java.util.Calendar;
 
 public class Revision {
 	public int Id;
+	public int Parentid;
 	public Calendar Timestamp;
 	public Contributor Contributor;
 	public String Comment;
+	public String Model;
+	public String Format;
 	public String Text;
+	public Integer Bytes;
+	public String Sha1;
 	public boolean Minor;
 	
 	public Revision() {
+		Parentid = 0;
 		Comment = "";
 		Text = "";
 		Minor = false;

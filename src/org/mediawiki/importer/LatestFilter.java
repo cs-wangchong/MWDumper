@@ -39,8 +39,8 @@ public class LatestFilter implements DumpWriter {
 		sink.close();
 	}
 	
-	public void writeStartWiki() throws IOException {
-		sink.writeStartWiki();
+	public void writeStartWiki(Wikiinfo info) throws IOException {
+		sink.writeStartWiki(info);
 	}
 	
 	public void writeEndWiki() throws IOException {

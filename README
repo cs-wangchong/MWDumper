@@ -76,6 +76,9 @@ Output formats:
   --format=xml
       Output back to MediaWiki's XML export format; use this for
       filtering dumps for limited import. Output should be idempotent.
+  --format=xml:0.3
+      Output in legacy 0.3 XML format; use with tools that can't handle
+      anything newer.
   --format=mysql:1.4
       SQL statements formatted for bulk import in MediaWiki 1.4's schema.
       (MySQL output format.)

@@ -47,7 +47,7 @@ public class SphinxWriter implements DumpWriter {
 		writer.close();
 	}
 	
-	public void writeStartWiki() throws IOException {
+	public void writeStartWiki(Wikiinfo info) throws IOException {
 		writer.openXml();
 		// No containing element to open
 	}

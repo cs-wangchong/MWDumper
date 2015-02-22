@@ -29,7 +29,9 @@ import java.util.Hashtable;
 
 public class Page {
 	public Title Title;
+	public int Ns;
 	public int Id;
+	public Title Redirect;
 	public boolean isRedirect = false;
 	public Hashtable<String,Object> DiscussionThreadingInfo;
 	public String Restrictions;

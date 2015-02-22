@@ -42,10 +42,10 @@ public class MultiWriter implements DumpWriter {
 		}
 	}
 	
-	public void writeStartWiki() throws IOException {
+	public void writeStartWiki(Wikiinfo info) throws IOException {
 		for (int i = 0; i < sinks.size(); i++) {
 			DumpWriter sink = sinks.get(i);
-			sink.writeStartWiki();
+			sink.writeStartWiki(info);
 		}
 	}
 	

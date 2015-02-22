@@ -31,21 +31,21 @@ import java.util.LinkedHashMap;
 import java.util.Iterator;
 
 public class NamespaceSet {
-	Map<String, Integer> byname;
-	Map<Integer, String> bynumber;
+	Map<String, Namespace> byname;
+	Map<Integer, Namespace> bynumber;
 	
 	public NamespaceSet() {
-		byname = new HashMap<String, Integer>();
-		bynumber = new LinkedHashMap<Integer, String>();
+		byname = new HashMap<String, Namespace>();
+		bynumber = new LinkedHashMap<Integer, Namespace>();
 	}
 	
-	public void add(int index, String prefix) {
-		add(new Integer(index), prefix);
+	public void add(int index, String prefix, String nscase) {
+		add(new Integer(index), prefix, nscase);
 	}
 	
-	public void add(Integer index, String prefix) {
-		byname.put(prefix, index);
-		bynumber.put(index, prefix);
+	public void add(Integer index, String prefix, String nscase) {
+		byname.put(prefix, new Namespace(index, prefix, nscase));
+		bynumber.put(index, new Namespace(index, prefix, nscase));
 	}
 	
 	public boolean hasPrefix(String prefix) {
@@ -57,11 +57,11 @@ public class NamespaceSet {
 	}
 	
 	public String getPrefix(Integer index) {
-		return bynumber.get(index);
+		return bynumber.get(index).Prefix;
 	}
 	
 	public Integer getIndex(String prefix) {
-		return byname.get(prefix);
+		return byname.get(prefix).Index;
 	}
 	
 	public String getColonPrefix(Integer index) {
@@ -71,7 +71,7 @@ public class NamespaceSet {
 		return prefix;
 	}
 	
-	public Iterator<Map.Entry<Integer, String>>  orderedEntries() {
+	public Iterator<Map.Entry<Integer, Namespace>>  orderedEntries() {
 		return bynumber.entrySet().iterator();
 	}
 }

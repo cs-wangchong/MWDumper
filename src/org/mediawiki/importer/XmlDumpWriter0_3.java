@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class XmlDumpWriter implements DumpWriter {
+public class XmlDumpWriter0_3 implements DumpWriter {
 	protected OutputStream stream;
 	protected XmlWriter writer;
 	
@@ -46,7 +46,7 @@ public class XmlDumpWriter implements DumpWriter {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
 	
-	public XmlDumpWriter(OutputStream output) throws IOException {
+	public XmlDumpWriter0_3(OutputStream output) throws IOException {
 		stream = output;
 		writer = new XmlWriter(stream);
 	}
@@ -55,15 +55,14 @@ public class XmlDumpWriter implements DumpWriter {
 		writer.close();
 	}
 	
-	public void writeStartWiki() throws IOException {
+	public void writeStartWiki(Wikiinfo info) throws IOException {
 		writer.openXml();
 		writer.openElement("mediawiki", new String[][] {
 			{"xmlns", ns},
 			{"xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance"},
 			{"xsi:schemaLocation", ns + " " + schema},
 			{"version", version},
-			{"xml:lang", "en"}});
-		// TODO: store and keep the xml:lang
+			{"xml:lang", info.Lang}});
 	}
 	
 	public void writeEndWiki() throws IOException {
@@ -80,9 +79,9 @@ public class XmlDumpWriter implements DumpWriter {
 		writer.textElement("case", info.Case);
 		
 		writer.openElement("namespaces");
-		for (Iterator<Map.Entry<Integer, String>> i = info.Namespaces.orderedEntries(); i.hasNext();) {
-			Map.Entry<Integer, String> e = i.next();
-			writer.textElement("namespace", e.getValue().toString(), new String[][] {
+		for (Iterator<Map.Entry<Integer, Namespace>> i = info.Namespaces.orderedEntries(); i.hasNext();) {
+			Map.Entry<Integer, Namespace> e = i.next();
+			writer.textElement("namespace", e.getValue().Prefix, new String[][] {
 					{"key", e.getKey().toString()}});
 		}
 		writer.closeElement();

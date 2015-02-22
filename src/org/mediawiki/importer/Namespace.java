@@ -1,6 +1,5 @@
 /*
  * MediaWiki import/export processing tools
- * Copyright 2005 by Brion Vibber
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,11 +24,14 @@
 
 package org.mediawiki.importer;
 
-public class Siteinfo {
-	public String Sitename;
-	public String Dbname;
-	public String Base;
-	public String Generator;
-	public String Case;
-	public NamespaceSet Namespaces;
+public class Namespace {
+	int Index;
+	String Prefix;
+	String Case;
+
+	public Namespace(int index, String prefix, String nscase) {
+		Index = index;
+		Prefix = prefix;
+		Case = nscase;
+	}
 }

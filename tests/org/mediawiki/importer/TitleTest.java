@@ -37,24 +37,24 @@ public class TitleTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		namespaces = new NamespaceSet();
-		namespaces.add(-2, "Media");
-		namespaces.add(-1, "Special");
-		namespaces.add(0, "");
-		namespaces.add(1, "Talk");
-		namespaces.add(2, "User");
-		namespaces.add(3, "User talk");
-		namespaces.add(4, "Project");
-		namespaces.add(5, "Project talk");
-		namespaces.add(6, "Image");
-		namespaces.add(7, "Image talk");
-		namespaces.add(8, "MediaWiki");
-		namespaces.add(9, "MediaWiki talk");
-		namespaces.add(10, "Template");
-		namespaces.add(11, "Template talk");
-		namespaces.add(12, "Help");
-		namespaces.add(13, "Help talk");
-		namespaces.add(14, "Category");
-		namespaces.add(15, "Category talk");
+		namespaces.add(-2, "Media", "first-letter");
+		namespaces.add(-1, "Special", "first-letter");
+		namespaces.add(0, "", "first-letter");
+		namespaces.add(1, "Talk", "first-letter");
+		namespaces.add(2, "User", "first-letter");
+		namespaces.add(3, "User talk", "first-letter");
+		namespaces.add(4, "Project", "first-letter");
+		namespaces.add(5, "Project talk", "first-letter");
+		namespaces.add(6, "Image", "first-letter");
+		namespaces.add(7, "Image talk", "first-letter");
+		namespaces.add(8, "MediaWiki", "first-letter");
+		namespaces.add(9, "MediaWiki talk", "first-letter");
+		namespaces.add(10, "Template", "first-letter");
+		namespaces.add(11, "Template talk", "first-letter");
+		namespaces.add(12, "Help", "first-letter");
+		namespaces.add(13, "Help talk", "first-letter");
+		namespaces.add(14, "Category", "first-letter");
+		namespaces.add(15, "Category talk", "first-letter");
 	}
 
 	protected void tearDown() throws Exception {

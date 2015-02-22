@@ -124,8 +124,9 @@ public abstract class SqlWriter implements DumpWriter {
 		stream.close();
 	}
 
-	public void writeStartWiki() throws IOException {
+	public void writeStartWiki(Wikiinfo info) throws IOException {
 		stream.writeComment("-- MediaWiki XML dump converted to SQL by mwdumper");
+		stream.writeComment("-- Lang: " + commentSafe(info.Lang));
 		stream.writeStatement("BEGIN");
 
 		String prologue = traits.getWikiPrologue();
@@ -146,14 +147,15 @@ public abstract class SqlWriter implements DumpWriter {
 	public void writeSiteinfo(Siteinfo info) throws IOException {
 		stream.writeComment("");
 		stream.writeComment("-- Site: " + commentSafe(info.Sitename));
+		stream.writeComment("-- DB name: " + commentSafe(info.Dbname));
 		stream.writeComment("-- URL: " + commentSafe(info.Base));
 		stream.writeComment("-- Generator: " + commentSafe(info.Generator));
 		stream.writeComment("-- Case: " + commentSafe(info.Case));
 		stream.writeComment("--");
 		stream.writeComment("-- Namespaces:");
-		for (Iterator<Map.Entry<Integer, String>>  i = info.Namespaces.orderedEntries(); i.hasNext();) {
-			Map.Entry<Integer, String> e = i.next();
-			stream.writeComment("-- " + e.getKey() + ": " + e.getValue());
+		for (Iterator<Map.Entry<Integer, Namespace>>  i = info.Namespaces.orderedEntries(); i.hasNext();) {
+			Map.Entry<Integer, Namespace> e = i.next();
+			stream.writeComment("-- " + e.getKey() + ": " + e.getValue().Prefix);
 		}
 		stream.writeComment("");
 	}

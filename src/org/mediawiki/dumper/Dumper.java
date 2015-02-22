@@ -89,7 +89,7 @@ class Dumper {
 					if (output != null) {
 						// Finish constructing the previous output...
 						if (sink == null)
-							sink = new XmlDumpWriter(output.getFileStream());
+							sink = new XmlDumpWriter0_10(output.getFileStream());
 						writers.add(sink);
 						sink = null;
 					}
@@ -104,7 +104,7 @@ class Dumper {
 					if (sink == null) {
 						if (output == null)
 							output = new OutputWrapper(Tools.openStandardOutput());
-						sink = new XmlDumpWriter(output.getFileStream());
+						sink = new XmlDumpWriter0_10(output.getFileStream());
 					}
 					sink = addFilter(sink, val, param);
 				} else if (opt.equals("progress")) {
@@ -131,7 +131,7 @@ class Dumper {
 			output = new OutputWrapper(Tools.openStandardOutput());
 		// Finish stacking the last output sink
 		if (sink == null)
-			sink = new XmlDumpWriter(output.getFileStream());
+			sink = new XmlDumpWriter0_10(output.getFileStream());
 		writers.add(sink);
 		
 		DumpWriter outputSink = (progressInterval > 0)
@@ -237,11 +237,17 @@ class Dumper {
 	}
 
 	static DumpWriter openOutputSink(OutputWrapper output, String format, String param) throws IOException {
-		if (format.equals("xml"))
-			return new XmlDumpWriter(output.getFileStream());
-		else if (format.equals("sphinx"))
+		if (format.equals("xml")) {
+			if (param.equals("0.3")) {
+				return new XmlDumpWriter0_3(output.getFileStream());
+			} else if (param.length() == 0 || param.equals("0.10")) {
+				return new XmlDumpWriter0_10(output.getFileStream());
+			} else {
+				throw new IllegalArgumentException("XML schema version not known: " + param);
+			}
+		} else if (format.equals("sphinx")) {
 			return new SphinxWriter(output.getFileStream());
-		else if (format.equals("mysql") || format.equals("pgsql") || format.equals("sql")) {
+		} else if (format.equals("mysql") || format.equals("pgsql") || format.equals("sql")) {
 			SqlStream sqlStream = output.getSqlStream();
 			SqlWriter ret;
 
@@ -259,8 +265,9 @@ class Dumper {
 				throw new IllegalArgumentException("SQL version not known: " + param);
 
 			return ret;
-		} else
+		} else {
 			throw new IllegalArgumentException("Output format not known: " + format);
+		}
 	}
 	
 	// ----------------

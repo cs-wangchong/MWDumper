@@ -30,7 +30,7 @@ import java.io.IOException;
 public interface DumpWriter {
 	void close() throws IOException;
 	
-	void writeStartWiki() throws IOException;
+	void writeStartWiki(Wikiinfo info) throws IOException;
 	void writeEndWiki() throws IOException;
 	
 	void writeSiteinfo(Siteinfo info) throws IOException;
