@@ -62,7 +62,7 @@
     <!-- where the jar goes -->
     <sourceDirectory>src</sourceDirectory>
     <!-- where the source files are -->
-    <testSourceDirectory>src</testSourceDirectory>
+    <testSourceDirectory>tests</testSourceDirectory>
     <!-- where the test source files are -->
     <plugins>
       <plugin>
@@ -73,21 +73,11 @@
           <source>1.6</source>
           <!-- enable assertions -->
           <target>1.6</target>
-          <excludes>
-            <!-- exclude tests here -->
-            <exclude>**/*Test.java</exclude>
-          </excludes>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.12.4</version>
-        <configuration>
-          <includes>
-            <!-- select only tests -->
-            <include>**/*Test.java</include>
-          </includes>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
