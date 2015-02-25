@@ -89,28 +89,6 @@ public class SqlWriter15 extends SqlWriter {
 		lastRevision = revision;
 	}
 	
-	private static int lengthUtf8(String s) {
-		final int slen = s.length();
-		final char[] buf = Buffer.get(slen);
-		s.getChars(0, slen, buf, 0);
-		int len = 0;
-		for (int i = 0; i < slen; i++) {
-			char c = buf[i];
-			if (c < 0x80)
-				len++;
-			else if (c < 0x800)
-				len+=2;
-			else if (c < 0xD800 || c >= 0xE000)
-				len+=3;
-			else {
-				// Surrogate pairs are assumed to be valid.
-				len+=4;
-				i++;
-			}
-		}
-		return len;
-	}
-	
 	private void updatePage(Page page, Revision revision) throws IOException {
 		bufferInsertRow("page", new Object[][] {
 				{"page_id", new Integer(page.Id)},
@@ -123,7 +101,7 @@ public class SqlWriter15 extends SqlWriter {
 				{"page_random", traits.getRandom()},
 				{"page_touched", traits.getCurrentTime()},
 				{"page_latest", new Integer(revision.Id)},
-				{"page_len", new Integer(lengthUtf8(revision.Text))}});
+				{"page_len", revision.Bytes}});
 		checkpoint();
 	}
 

@@ -27,6 +27,7 @@ package org.mediawiki.importer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -425,6 +426,15 @@ public class XmlDumpReader  extends DefaultHandler {
 	void readText() {
 		rev.Text = bufferContentsOrNull();
 		if (rev.Text==null && !deleted) rev.Text = ""; //NOTE: null means deleted/supressed
+		if (rev.Bytes == null) {
+			try {
+				rev.Bytes = rev.Text.getBytes("UTF-8").length;
+			} catch (UnsupportedEncodingException ex) {
+				// FIXME: What should we use as a default value on failure?
+				// This is probably unreachable...
+				rev.Bytes = -1;
+			}
+		}
 	}
 
 	void readSha1() {
