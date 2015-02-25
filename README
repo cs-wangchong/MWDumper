@@ -131,6 +131,20 @@ Misc options:
       Don't send any progress output to stderr.
 
 
+BUILDING:
+
+To help develop mwdumper, get the source from:
+
+    git clone https://gerrit.wikimedia.org/r/mediawiki/tools/mwdumper
+
+Make sure you have Maven 2 or later installed on your system, then:
+
+    mvn package
+
+This will compile and build target/mwdumper-1.16.jar, which can be run
+as in the USAGE section above.
+
+
 PERFORMANCE TIPS:
 
 To speed up importing into a database, you might try:
