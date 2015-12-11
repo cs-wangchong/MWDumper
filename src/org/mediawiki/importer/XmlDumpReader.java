@@ -426,7 +426,7 @@ public class XmlDumpReader  extends DefaultHandler {
 	void readText() {
 		rev.Text = bufferContentsOrNull();
 		if (rev.Text==null && !deleted) rev.Text = ""; //NOTE: null means deleted/supressed
-		if (rev.Bytes == null) {
+		if (rev.Text != null && rev.Bytes == null) {
 			try {
 				rev.Bytes = rev.Text.getBytes("UTF-8").length;
 			} catch (UnsupportedEncodingException ex) {
