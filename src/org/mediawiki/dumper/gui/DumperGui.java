@@ -15,6 +15,7 @@ import org.mediawiki.importer.SqlServerStream;
 import org.mediawiki.importer.SqlWriter;
 import org.mediawiki.importer.SqlWriter14;
 import org.mediawiki.importer.SqlWriter15;
+import org.mediawiki.importer.SqlWriter1_25;
 import org.mediawiki.importer.XmlDumpReader;
 
 public class DumperGui {
@@ -36,7 +37,7 @@ public class DumperGui {
 	String username = "root";
 	String password = "";
 	
-	String schema = "1.5";
+	String schema = "1.25";
 	String dbname = "wikidb";
 	String prefix = "";
 	
@@ -232,8 +233,10 @@ public class DumperGui {
 		/* XXX should have mysql/postgres selection */
 		if (schema.equals("1.4"))
 			return new SqlWriter14(getTraits(), sqlStream, prefix);
-		else
+                else if (schema.equals("1.5"))
 			return new SqlWriter15(getTraits(), sqlStream, prefix);
+		else
+			return new SqlWriter1_25(getTraits(), sqlStream, prefix);
 	}
 	
 	void abort() {

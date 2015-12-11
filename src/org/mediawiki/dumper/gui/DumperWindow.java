@@ -106,6 +106,7 @@ public class DumperWindow extends DumperWindowForm {
 				schemaLabel,
 				schema14Radio,
 				schema15Radio,
+				schema1_25Radio,
 				prefixLabel,
 				prefixText,
 				dbnameLabel,
@@ -211,6 +212,10 @@ public class DumperWindow extends DumperWindowForm {
 	protected void onSchema15RadioActionPerformed(java.awt.event.ActionEvent evt) {
 		backend.setSchema("1.5");
 	}
+
+        protected void onSchema1_25RadioActionPerformed(java.awt.event.ActionEvent evt) {
+		backend.setSchema("1.25");
+        }
 	
 	/* ---- more random crap ---- */
 	
