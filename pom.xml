@@ -15,6 +15,13 @@
 
   <dependencies>
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- We're using the "android" variant in order to support Java 7,
+      transitionally. -->
+      <version>23.6-android</version>
+    </dependency>
+    <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
       <version>1.4.1</version>

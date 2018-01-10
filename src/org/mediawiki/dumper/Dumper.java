@@ -69,7 +69,32 @@ import java.util.zip.GZIPOutputStream;
 
 import java.text.ParseException;
 
-import org.mediawiki.importer.*;
+import org.mediawiki.dumper.filters.AfterTimeStampFilter;
+import org.mediawiki.dumper.filters.BeforeTimeStampFilter;
+import org.mediawiki.dumper.filters.LatestFilter;
+import org.mediawiki.dumper.filters.ProgressFilter;
+import org.mediawiki.dumper.filters.RevisionListFilter;
+import org.mediawiki.dumper.filters.TimeStampFilter;
+import org.mediawiki.dumper.filters.predicates.AdHocListFilter;
+import org.mediawiki.dumper.filters.predicates.ExactListFilter;
+import org.mediawiki.dumper.filters.predicates.ListFilter;
+import org.mediawiki.dumper.filters.predicates.NamespaceFilter;
+import org.mediawiki.dumper.filters.predicates.NotalkFilter;
+import org.mediawiki.dumper.filters.predicates.PredicatePageFilter;
+import org.mediawiki.dumper.filters.predicates.TitleMatchFilter;
+import org.mediawiki.dumper.input.XmlDumpReader;
+import org.mediawiki.dumper.writers.DumpWriter;
+import org.mediawiki.dumper.writers.MultiWriter;
+import org.mediawiki.dumper.writers.sql.SqlFileStream;
+import org.mediawiki.dumper.writers.sql.SqlServerStream;
+import org.mediawiki.dumper.writers.sql.SqlStream;
+import org.mediawiki.dumper.writers.sql.SqlWriter;
+import org.mediawiki.dumper.writers.sql.SqlWriter1_25;
+import org.mediawiki.dumper.writers.sql.SqlWriter14;
+import org.mediawiki.dumper.writers.sql.SqlWriter15;
+import org.mediawiki.dumper.writers.xml.SphinxWriter;
+import org.mediawiki.dumper.writers.xml.XmlDumpWriter0_10;
+import org.mediawiki.dumper.writers.xml.XmlDumpWriter0_3;
 
 
 class Dumper {

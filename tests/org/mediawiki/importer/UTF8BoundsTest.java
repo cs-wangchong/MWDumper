@@ -35,6 +35,9 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.output.NullOutputStream;
+import org.mediawiki.dumper.input.XmlDumpReader;
+import org.mediawiki.dumper.writers.DumpWriter;
+import org.mediawiki.dumper.writers.xml.XmlDumpWriter0_10;
 
 public class UTF8BoundsTest extends TestCase {
 

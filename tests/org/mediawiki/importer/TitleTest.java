@@ -25,6 +25,9 @@
 
 package org.mediawiki.importer;
 
+import org.mediawiki.dumper.wiki.NamespaceSet;
+import org.mediawiki.dumper.wiki.Title;
+
 import junit.framework.TestCase;
 
 public class TitleTest extends TestCase {

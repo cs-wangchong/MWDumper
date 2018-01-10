@@ -19,16 +19,15 @@ import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.mediawiki.importer.DumpWriter;
+
+import org.mediawiki.dumper.writers.DumpWriter;
+
 
 /**
  *
  * @author brion
  */
 public class DumperWindow extends DumperWindowForm {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 154925660542049290L;
 	protected DumperGui backend;
 	private int dbtype = DumperGui.DBTYPE_MYSQL;

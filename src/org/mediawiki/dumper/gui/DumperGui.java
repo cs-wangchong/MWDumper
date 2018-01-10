@@ -10,13 +10,14 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 import org.mediawiki.dumper.Tools;
-import org.mediawiki.importer.DumpWriter;
-import org.mediawiki.importer.SqlServerStream;
-import org.mediawiki.importer.SqlWriter;
-import org.mediawiki.importer.SqlWriter14;
-import org.mediawiki.importer.SqlWriter15;
-import org.mediawiki.importer.SqlWriter1_25;
-import org.mediawiki.importer.XmlDumpReader;
+import org.mediawiki.dumper.writers.DumpWriter;
+import org.mediawiki.dumper.writers.sql.SqlServerStream;
+import org.mediawiki.dumper.writers.sql.SqlWriter;
+import org.mediawiki.dumper.writers.sql.SqlWriter14;
+import org.mediawiki.dumper.writers.sql.SqlWriter15;
+import org.mediawiki.dumper.writers.sql.SqlWriter1_25;
+import org.mediawiki.dumper.input.XmlDumpReader;
+
 
 public class DumperGui {
 	private DumperWindow gui;

@@ -3,8 +3,8 @@ package org.mediawiki.dumper.gui;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import org.mediawiki.dumper.ProgressFilter;
-import org.mediawiki.importer.DumpWriter;
+import org.mediawiki.dumper.filters.ProgressFilter;
+import org.mediawiki.dumper.writers.DumpWriter;
 
 public class GraphicalProgressFilter extends ProgressFilter {
 	final JLabel target;
