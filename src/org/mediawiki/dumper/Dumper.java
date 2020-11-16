@@ -89,6 +89,7 @@ import org.mediawiki.dumper.writers.sql.SqlFileStream;
 import org.mediawiki.dumper.writers.sql.SqlServerStream;
 import org.mediawiki.dumper.writers.sql.SqlStream;
 import org.mediawiki.dumper.writers.sql.SqlWriter;
+import org.mediawiki.dumper.writers.sql.SqlWriter1_35;
 import org.mediawiki.dumper.writers.sql.SqlWriter1_25;
 import org.mediawiki.dumper.writers.sql.SqlWriter14;
 import org.mediawiki.dumper.writers.sql.SqlWriter15;
@@ -288,6 +289,8 @@ class Dumper {
 				ret = new SqlWriter15(tr, sqlStream);
 			else if (param.equals("1.25"))
 				ret = new SqlWriter1_25(tr, sqlStream);
+			else if (param.equals("1.35"))
+				ret = new SqlWriter1_35(tr, sqlStream);
 			else
 				throw new IllegalArgumentException("SQL version not known: " + param);
 

@@ -19,7 +19,7 @@ If strange XML errors are encountered under Java 1.4, try 1.5:
 USAGE:
 
 Sample command line for a direct database import:
-  java -jar mwdumper.jar --format=mysql:1.5 pages_full.xml.bz2 |
+  java -jar mwdumper.jar --format=mysql:1.35 pages_full.xml.bz2 |
     mysql -u <username> -p <databasename>
 
 You can also do complex filtering to produce multiple output files:
@@ -32,6 +32,8 @@ You can also do complex filtering to produce multiple output files:
     --output=bzip2:pages_current.xml.bz2 \
       --format=xml \
       --filter=latest \
+    --output=gzip:pages_full_1.35.sql.gz \
+      --format=mysql:1.35 \
     --output=gzip:pages_full_1.25.sql.gz \
       --format=mysql:1.25 \
     --output=gzip:pages_full_1.4.sql.gz \
@@ -90,6 +92,8 @@ Output formats:
       (MySQL output format.)
   --format=mysql:1.25
       SQL statements formatted for bulk import into MediaWiki 1.25's schema.
+  --format=mysql:1.35
+      SQL statements formatted for bulk import into MediaWiki 1.35's schema.
   --format=pgsql:1.4
       SQL statements formatted for bulk import in MediaWiki 1.4's schema.
       (PostgreSQL output format.)
